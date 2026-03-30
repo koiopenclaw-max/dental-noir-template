@@ -278,7 +278,7 @@ svg.icon-lg{width:28px;height:28px}
         +359 888 777 666
       </a>
       <a href="#contact" class="btn btn-rose">Резервация</a>
-      <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()">
+      <div class="menu-toggle" id="menuToggle" onclick="toggleMenu()" role="button" aria-label="Отвори меню" aria-expanded="false">
         <span></span><span></span><span></span>
       </div>
     </div>
@@ -287,7 +287,7 @@ svg.icon-lg{width:28px;height:28px}
 
 <!-- MOBILE NAV -->
 <div class="mobile-nav" id="mobileNav">
-  <div class="mobile-nav-bg"></div>
+  <div class="mobile-nav-bg" onclick="closeMenu()"></div>
   <div class="mobile-nav-content">
     <ul class="mobile-nav-links">
       <li><a href="#services" onclick="closeMenu()">Услуги<span>Козметична стоматология</span></a></li>
@@ -593,13 +593,19 @@ function toggleMenu(){
   const n=document.getElementById('mobileNav');
   t.classList.toggle('active');
   n.classList.toggle('open');
-  document.body.style.overflow=n.classList.contains('open')?'hidden':'';
+  const isOpen=n.classList.contains('open');
+  document.body.style.overflow=isOpen?'hidden':'';
+  t.setAttribute('aria-expanded',isOpen);
+  t.setAttribute('aria-label',isOpen?'Затвори меню':'Отвори меню');
 }
 function closeMenu(){
   document.getElementById('menuToggle').classList.remove('active');
+  document.getElementById('menuToggle').setAttribute('aria-expanded','false');
+  document.getElementById('menuToggle').setAttribute('aria-label','Отвори меню');
   document.getElementById('mobileNav').classList.remove('open');
   document.body.style.overflow='';
 }
+document.addEventListener('keydown',(e)=>{if(e.key==='Escape')closeMenu();});
 
 // FAQ
 function toggleFaq(el){
